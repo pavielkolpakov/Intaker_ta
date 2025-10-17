@@ -1,0 +1,44 @@
+@if (weatherService.currentWeather()) {
+    <div class="apple-weather-container">
+        <!-- Location and current temp -->
+        <div class="weather-header">
+            <h1 class="location">{{ cityName() }}</h1>
+            <div class="current-temp">{{ temperature() }}°</div>
+            <div class="weather-desc">{{ description() }}</div>
+            <div class="temp-range">H:{{ tempMax() }}° L:{{ tempMin() }}°</div>
+        </div>
+
+        <!-- Weather details cards -->
+        <div class="weather-cards">
+            <mat-card class="weather-card">
+                <mat-card-header class="card-header">
+                    <mat-icon>thermostat</mat-icon>
+                    <mat-card-title>FEELS LIKE</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>{{ feelsLike() }}°</p>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card class="weather-card">
+                <mat-card-header class="card-header">
+                    <mat-icon>water_drop</mat-icon>
+                    <mat-card-title>HUMIDITY</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>{{ humidity() }}%</p>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card class="weather-card">
+                <mat-card-header class="card-header">
+                    <mat-icon>air</mat-icon>
+                    <mat-card-title>WIND</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>{{ windSpeed() }} m/s</p>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+}

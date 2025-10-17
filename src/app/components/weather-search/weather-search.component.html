@@ -1,0 +1,16 @@
+<div class="search-container">
+    <mat-form-field appearance="outline" class="search-field">
+        <mat-label style="color: white; ">Search for a city</mat-label>
+        <input matInput style="color: white; " type="text" [(ngModel)]="cityName" (keyup.enter)="onSearch()" />
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <button mat-raised-button class="search-button" (click)="onSearch()"
+        [disabled]="!cityName().trim()">
+        @if (weatherService.loading()) {
+            <span>Searching...</span>
+        } @else {
+            <span>Search</span>
+        }
+    </button>
+</div>

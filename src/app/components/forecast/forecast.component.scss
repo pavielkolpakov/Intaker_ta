@@ -1,0 +1,187 @@
+.forecast-container {
+    max-width: 600px;
+    margin: 1rem auto;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.forecast-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+    mat-icon {
+        font-size: 1.2rem;
+        width: 1.2rem;
+        height: 1.2rem;
+        opacity: 0.8;
+    }
+
+    h3 {
+        margin: 0;
+        font-size: 0.65rem;
+        font-weight: 600;
+        opacity: 0.9;
+    }
+}
+
+.forecast-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.forecast-item {
+    display: grid;
+    grid-template-columns: 80px 50px 1fr;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        margin-left: -0.5rem;
+        margin-right: -0.5rem;
+    }
+}
+
+.day-info {
+    .day-name {
+        font-size: 1.1rem;
+        font-weight: 400;
+        opacity: 0.95;
+    }
+}
+
+.weather-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 40px;
+        height: 40px;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    }
+}
+
+.temp-bar-container {
+    flex: 1;
+}
+
+.temp-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .temp-min,
+    .temp-max {
+        font-size: 1.1rem;
+        font-weight: 400;
+        min-width: 40px;
+        text-align: center;
+    }
+
+    .temp-min {
+        opacity: 0.7;
+    }
+
+    .bar {
+        flex: 1;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 2px;
+        position: relative;
+        overflow: hidden;
+
+        .bar-fill {
+            position: absolute;
+            left: 30%;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #FF9500, #FF5E3A);
+            border-radius: 2px;
+            animation: fillBar 1s ease-out;
+        }
+    }
+}
+
+@keyframes fillBar {
+    from {
+        transform: scaleX(0);
+        transform-origin: left;
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@media (max-width: 768px) {
+    .apple-forecast-container {
+        margin: 2rem auto;
+        padding: 1.25rem;
+    }
+
+    .forecast-item {
+        grid-template-columns: 70px 40px 1fr;
+        gap: 0.75rem;
+    }
+
+    .day-info .day-name {
+        font-size: 1rem;
+    }
+
+    .weather-icon img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .temp-bar {
+
+        .temp-min,
+        .temp-max {
+            font-size: 1rem;
+            min-width: 35px;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .forecast-item {
+        grid-template-columns: 60px 35px 1fr;
+        gap: 0.5rem;
+    }
+
+    .day-info .day-name {
+        font-size: 0.95rem;
+    }
+
+    .weather-icon img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .temp-bar {
+        gap: 0.5rem;
+
+        .temp-min,
+        .temp-max {
+            font-size: 0.95rem;
+            min-width: 32px;
+        }
+    }
+}

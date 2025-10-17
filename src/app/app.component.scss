@@ -1,0 +1,479 @@
+.app-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+
+    color: white;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+// Weather background animations (fixed position)
+.weather-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    transition: background 1s ease;
+
+    // Clear/Sunny background
+    &[data-weather="clear"] {
+        background: linear-gradient(180deg,
+                #4A90E2 0%,
+                #7CB8F7 50%,
+                #B3D9FF 100%);
+    }
+
+    // Cloudy background
+    &[data-weather="cloudy"] {
+        background: linear-gradient(180deg,
+                #6B7C93 0%,
+                #8B9DB5 50%,
+                #B0BCC9 100%);
+    }
+
+    // Rainy background
+    &[data-weather="rainy"] {
+        background: linear-gradient(180deg,
+                #4A5568 0%,
+                #5D6B7E 50%,
+                #718096 100%);
+    }
+
+    // Snowy background
+    &[data-weather="snowy"] {
+        background: linear-gradient(180deg,
+                #B8C6DB 0%,
+                #D5DEE7 50%,
+                #E8EFF5 100%);
+    }
+}
+
+// Weather animations container
+.weather-animation {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    filter: blur(2px); // Blur all weather animations slightly
+    -webkit-filter: blur(2px);
+}
+
+// Content wrapper with flex layout
+.content-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    min-height: 100vh;
+
+    // Desktop: side by side
+    flex-direction: row;
+
+    // Mobile: stacked
+    @media (max-width: 768px) {
+        flex-direction: column;
+    }
+}
+
+// Sidebar styling
+.sidebar {
+    // Desktop: fixed width on left
+    flex: 0 0 340px;
+    background: rgba(28, 28, 30, 0.6);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0 15px 15px 0;
+
+    // Mobile: full width on top, more transparent
+    @media (max-width: 768px) {
+        flex: 0 0 auto;
+        width: 100%;
+        background: rgba(28, 28, 30, 0.6);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 0 0 15px 15px;
+    }
+
+    .sidebar-content {
+        padding: 2rem 1.5rem;
+        color: white;
+
+        // Desktop: sticky positioning
+        @media (min-width: 769px) {
+            position: sticky;
+            top: 0;
+            max-height: 100vh;
+            overflow-y: auto;
+        }
+
+        // Mobile: regular flow
+        @media (max-width: 768px) {
+            padding: 1.5rem 1rem;
+        }
+    }
+
+    .sidebar-header {
+        margin-bottom: 2rem;
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        @media (max-width: 768px) {
+            margin-bottom: 1.5rem;
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    }
+
+    .search-section {
+        margin-bottom: 1.5rem;
+    }
+}
+
+.main-content {
+    flex: 1;
+    overflow: hidden;
+
+    // Mobile: full width below
+    @media (max-width: 768px) {
+        padding: 1.5rem 1rem;
+    }
+
+    @media (max-width: 480px) {
+        padding: 1rem;
+    }
+}
+
+// Sun animation
+.sun {
+    position: absolute;
+    top: 15%;
+    right: 20%;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, #FFD700 0%, #FFA500 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 60px rgba(255, 215, 0, 0.6);
+    animation: sunPulse 4s ease-in-out infinite;
+}
+
+.sun-rays {
+    position: absolute;
+    top: 15%;
+    right: 20%;
+    width: 120px;
+    height: 120px;
+    animation: rotate 20s linear infinite;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 200px;
+        height: 200px;
+        background: conic-gradient(transparent 0deg,
+                rgba(255, 215, 0, 0.1) 45deg,
+                transparent 90deg,
+                rgba(255, 215, 0, 0.1) 135deg,
+                transparent 180deg,
+                rgba(255, 215, 0, 0.1) 225deg,
+                transparent 270deg,
+                rgba(255, 215, 0, 0.1) 315deg,
+                transparent 360deg);
+        border-radius: 50%;
+    }
+}
+
+@keyframes sunPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 60px rgba(255, 215, 0, 0.6);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 80px rgba(255, 215, 0, 0.8);
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// Cloud animations
+.cloud {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 100px;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 100px;
+    }
+}
+
+.cloud-1 {
+    width: 150px;
+    height: 50px;
+    top: 20%;
+    left: 10%;
+    animation: float 15s ease-in-out infinite;
+
+    &::before {
+        width: 65px;
+        height: 65px;
+        top: -35px;
+        left: 15px;
+    }
+
+    &::after {
+        width: 85px;
+        height: 85px;
+        top: -45px;
+        right: 20px;
+    }
+}
+
+.cloud-2 {
+    width: 120px;
+    height: 40px;
+    top: 40%;
+    right: 15%;
+    animation: float 20s ease-in-out infinite reverse;
+
+    &::before {
+        width: 55px;
+        height: 55px;
+        top: -30px;
+        left: 12px;
+    }
+
+    &::after {
+        width: 70px;
+        height: 70px;
+        top: -38px;
+        right: 15px;
+    }
+}
+
+.cloud-3 {
+    width: 100px;
+    height: 35px;
+    top: 60%;
+    left: 30%;
+    animation: float 18s ease-in-out infinite;
+
+    &::before {
+        width: 45px;
+        height: 45px;
+        top: -25px;
+        left: 10px;
+    }
+
+    &::after {
+        width: 60px;
+        height: 60px;
+        top: -32px;
+        right: 12px;
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px) translateX(0px);
+    }
+
+    50% {
+        transform: translateY(-20px) translateX(30px);
+    }
+}
+
+// Rain cloud styling
+.rain-cloud-1,
+.rain-cloud-2 {
+    background: rgba(100, 100, 120, 0.9);
+
+    &::before,
+    &::after {
+        background: rgba(100, 100, 120, 0.9);
+    }
+}
+
+.rain-cloud-1 {
+    width: 180px;
+    height: 60px;
+    top: 15%;
+    left: 20%;
+    animation: float 12s ease-in-out infinite;
+
+    &::before {
+        width: 75px;
+        height: 75px;
+        top: -40px;
+        left: 20px;
+    }
+
+    &::after {
+        width: 95px;
+        height: 95px;
+        top: -50px;
+        right: 25px;
+    }
+}
+
+.rain-cloud-2 {
+    width: 160px;
+    height: 55px;
+    top: 15%;
+    right: 25%;
+    animation: float 14s ease-in-out infinite reverse;
+
+    &::before {
+        width: 70px;
+        height: 70px;
+        top: -38px;
+        left: 18px;
+    }
+
+    &::after {
+        width: 85px;
+        height: 85px;
+        top: -45px;
+        right: 22px;
+    }
+}
+
+// Rain animation
+.rain {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.raindrop {
+    position: absolute;
+    width: 2px;
+    height: 20px;
+    background: linear-gradient(transparent, rgba(174, 194, 224, 0.8));
+    animation: rain-fall 1s linear infinite;
+    top: -20px;
+}
+
+@keyframes rain-fall {
+    to {
+        transform: translateY(100vh);
+    }
+}
+
+// Snow animation
+.snow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.snowflake {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    animation: snow-fall 3s linear infinite;
+    top: -10px;
+    opacity: 0.8;
+}
+
+@keyframes snow-fall {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+    }
+}
+
+// Responsive adjustments for animations
+@media (max-width: 768px) {
+    .sun {
+        width: 80px;
+        height: 80px;
+        top: 10%;
+        right: 10%;
+    }
+
+    .sun-rays {
+        width: 80px;
+        height: 80px;
+
+        &::before,
+        &::after {
+            width: 140px;
+            height: 140px;
+        }
+    }
+
+    .cloud-1,
+    .rain-cloud-1 {
+        width: 100px;
+        height: 35px;
+
+        &::before {
+            width: 45px;
+            height: 45px;
+            top: -25px;
+        }
+
+        &::after {
+            width: 60px;
+            height: 60px;
+            top: -32px;
+        }
+    }
+
+    .cloud-2,
+    .cloud-3,
+    .rain-cloud-2 {
+        width: 80px;
+        height: 28px;
+
+        &::before {
+            width: 35px;
+            height: 35px;
+            top: -20px;
+        }
+
+        &::after {
+            width: 48px;
+            height: 48px;
+            top: -26px;
+        }
+    }
+}

@@ -1,0 +1,32 @@
+@if (weatherService.dailyForecast().length > 0) {
+    <mat-card class="forecast-container">
+        <mat-card-header class="forecast-header">
+            <mat-icon>calendar_today</mat-icon>
+            <mat-card-title>5-DAY FORECAST</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content class="forecast-list">
+            @for (day of weatherService.dailyForecast(); track day.date) {
+                <div class="forecast-item">
+                    <div class="day-info">
+                        <span class="day-name">{{ getDayName(day.date) }}</span>
+                    </div>
+
+                    <div class="weather-icon">
+                        <img [src]="weatherService.getWeatherIconUrl(day.icon)" [alt]="day.description" />
+                    </div>
+
+                    <div class="temp-bar-container">
+                        <div class="temp-bar">
+                            <span class="temp-min">{{ Math.round(day.temp_min) }}°</span>
+                            <div class="bar">
+                                <div class="bar-fill"></div>
+                            </div>
+                            <span class="temp-max">{{ Math.round(day.temp_max) }}°</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </mat-card-content>
+    </mat-card>
+}

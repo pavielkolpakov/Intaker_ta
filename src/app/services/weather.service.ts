@@ -56,6 +56,12 @@ export interface DailyForecast {
     main: string;
 }
 
+interface CachedWeatherData {
+    currentWeather: WeatherData;
+    forecast: ForecastData;
+    timestamp: number;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -65,6 +71,8 @@ export class WeatherService {
 
     private readonly API_KEY = '16bcc1df0a626a6fca1e51c79314c085';
     private readonly BASE_URL = 'https://api.openweathermap.org/data/2.5';
+    private readonly CACHE_DURATION_MS = 60 * 60 * 1000;
+    private readonly CACHE_KEY_PREFIX = 'weather_cache_';
 
     currentWeather = signal<WeatherData | null>(null);
     forecast = signal<ForecastData | null>(null);
@@ -101,7 +109,18 @@ export class WeatherService {
 
     searchCity(cityName: string): void {
         if (!cityName.trim()) {
-            this.notificationService.showError('Please enter a city name');
+            this.notificationService.showNotification('Please enter a city name');
+            return;
+        }
+
+        const cacheKey = cityName.toLowerCase().trim();
+        const cachedData = this.getCachedData(cacheKey);
+        const currentTime = Date.now();
+
+        if (cachedData && (currentTime - cachedData.timestamp) < this.CACHE_DURATION_MS) {
+            this.currentWeather.set(cachedData.currentWeather);
+            this.forecast.set(cachedData.forecast);
+            this.notificationService.showNotification('Weather data loaded from cache');
             return;
         }
 
@@ -110,11 +129,11 @@ export class WeatherService {
         this.http.get<WeatherData>(`${this.BASE_URL}/weather?q=${cityName}&units=metric&appid=${this.API_KEY}`).pipe(
             catchError(error => {
                 if (error.status === 404) {
-                    this.notificationService.showError('City not found. Please try another city.');
+                    this.notificationService.showNotification('City not found. Please try another city.');
                 } else if (error.status === 401) {
-                    this.notificationService.showError('Invalid API key. Please check your configuration.');
+                    this.notificationService.showNotification('Invalid API key. Please check your configuration.');
                 } else {
-                    this.notificationService.showError('Failed to fetch weather data. Please try again.');
+                    this.notificationService.showNotification('Failed to fetch weather data. Please try again.');
                 }
                 this.loading.set(false);
                 return of(null);
@@ -130,13 +149,23 @@ export class WeatherService {
     private fetchForecast(cityName: string): void {
         this.http.get<ForecastData>(`${this.BASE_URL}/forecast?q=${cityName}&units=metric&appid=${this.API_KEY}`).pipe(
             catchError(error => {
-                this.notificationService.showError('Failed to fetch forecast data. Please try again.');
+                this.notificationService.showNotification('Failed to fetch forecast data. Please try again.');
                 this.loading.set(false);
                 return of(null);
             })
         ).subscribe(data => {
             if (data) {
                 this.forecast.set(data);
+
+                const currentWeatherData = this.currentWeather();
+                if (currentWeatherData) {
+                    const cacheKey = cityName.toLowerCase().trim();
+                    this.setCachedData(cacheKey, {
+                        currentWeather: currentWeatherData,
+                        forecast: data,
+                        timestamp: Date.now()
+                    });
+                }
             }
             this.loading.set(false);
         });
@@ -144,6 +173,26 @@ export class WeatherService {
 
     getWeatherIconUrl(iconCode: string): string {
         return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+    }
+
+    private getCachedData(cityKey: string): CachedWeatherData | null {
+        try {
+            const cached = localStorage.getItem(this.CACHE_KEY_PREFIX + cityKey);
+            if (cached) {
+                return JSON.parse(cached);
+            }
+        } catch (error) {
+            console.error('Error reading from cache:', error);
+        }
+        return null;
+    }
+
+    private setCachedData(cityKey: string, data: CachedWeatherData): void {
+        try {
+            localStorage.setItem(this.CACHE_KEY_PREFIX + cityKey, JSON.stringify(data));
+        } catch (error) {
+            console.error('Error writing to cache:', error);
+        }
     }
 }
 

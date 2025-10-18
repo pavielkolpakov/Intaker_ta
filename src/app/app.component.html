@@ -1,21 +1,17 @@
 <div class="app-container">
-  <!-- Animated weather background -->
   <div class="weather-background" [attr.data-weather]="weatherCondition()">
     <div class="weather-animation">
-      <!-- Clear/Sunny animation -->
       @if (weatherCondition() === 'clear') {
       <div class="sun"></div>
       <div class="sun-rays"></div>
       }
 
-      <!-- Cloudy animation -->
       @if (weatherCondition() === 'cloudy') {
       <div class="cloud cloud-1"></div>
       <div class="cloud cloud-2"></div>
       <div class="cloud cloud-3"></div>
       }
 
-      <!-- Rainy animation -->
       @if (weatherCondition() === 'rainy') {
       <div class="cloud rain-cloud-1"></div>
       <div class="cloud rain-cloud-2"></div>
@@ -26,7 +22,6 @@
       </div>
       }
 
-      <!-- Snowy animation -->
       @if (weatherCondition() === 'snowy') {
       <div class="snow">
         @for (flake of [].constructor(50); track $index) {
@@ -37,9 +32,7 @@
     </div>
   </div>
 
-  <!-- Content overlay with flex layout -->
   <div class="content-wrapper">
-    <!-- Sidebar (left on desktop, top on mobile) -->
     <aside class="sidebar">
       <div class="sidebar-content">
         <div class="sidebar-header">
@@ -52,7 +45,6 @@
       </div>
     </aside>
 
-    <!-- Main content area (right on desktop, below on mobile) -->
     <main class="main-content">
       <app-current-weather />
       <app-forecast />

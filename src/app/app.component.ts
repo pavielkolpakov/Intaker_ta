@@ -19,7 +19,7 @@ export class AppComponent {
 
   readonly weatherCondition = computed(() => {
     const weather = this.weatherService.currentWeather();
-    if (!weather) return 'rainy';
+    if (!weather) return 'clear';
 
     const main = weather.weather[0].main.toLowerCase();
 

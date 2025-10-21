@@ -2,6 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { WeatherSearchComponent } from './components/weather-search/weather-search.component';
 import { CurrentWeatherComponent } from './components/current-weather/current-weather.component';
 import { ForecastComponent } from './components/forecast/forecast.component';
+import { FavoriteCitiesComponent } from './components/favorite-cities/favorite-cities.component';
 import { WeatherService } from './services/weather.service';
 
 @Component({
@@ -10,6 +11,7 @@ import { WeatherService } from './services/weather.service';
     WeatherSearchComponent,
     CurrentWeatherComponent,
     ForecastComponent,
+    FavoriteCitiesComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

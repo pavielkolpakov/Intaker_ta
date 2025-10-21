@@ -1,19 +1,45 @@
 .apple-weather-container {
     max-width: 600px;
     margin: auto;
-    
+
     .weather-header {
         text-align: center;
         padding: 2rem 1rem;
         margin-bottom: 2rem;
-    
-        .location {
-            font-size: 2rem;
-            font-weight: 300;
-            margin: 0 0 1rem 0;
-            letter-spacing: 0.5px;
+
+        .location-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+
+            .location {
+                font-size: 2rem;
+                font-weight: 300;
+                margin: 0;
+                letter-spacing: 0.5px;
+            }
+
+            .favorite-btn {
+                width: 40px !important;
+                height: 40px !important;
+                background: rgba(255, 255, 255, 0.15) !important;
+                // backdrop-filter: blur(10px);
+
+                mat-icon {
+                    color: white;
+                    font-size: 24px;
+                    width: 24px;
+                    height: 24px;
+                }
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.25) !important;
+                }
+            }
         }
-    
+
         .current-temp {
             font-size: 6rem;
             font-weight: 300;
@@ -21,7 +47,7 @@
             margin: 0.5rem 0;
             font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
         }
-    
+
         .weather-desc {
             font-size: 1.3rem;
             font-weight: 400;
@@ -29,7 +55,7 @@
             margin: 0.5rem 0;
             opacity: 0.95;
         }
-    
+
         .temp-range {
             font-size: 1.1rem;
             font-weight: 500;
@@ -53,7 +79,7 @@
         border-radius: 16px;
         padding: 0 0.75rem;
         border: 1px solid rgba(255, 255, 255, 0.2);
-    
+
         .card-header {
             display: flex;
             align-items: center;
@@ -65,14 +91,14 @@
                 font-size: 1rem;
                 // letter-spacing: 0.5px;
             }
-    
+
             mat-icon {
                 font-size: 1rem;
                 width: 1rem;
                 height: 1rem;
             }
         }
-    
+
         mat-card-content {
             height: 100%;
             font-size: 2rem;

@@ -72,7 +72,8 @@ export class WeatherService {
     private readonly API_KEY = '16bcc1df0a626a6fca1e51c79314c085';
     private readonly BASE_URL = 'https://api.openweathermap.org/data/2.5';
     private readonly CACHE_DURATION_MS = 60 * 60 * 1000;
-    private readonly CACHE_KEY_PREFIX = 'weather_cache_';
+
+    private readonly weatherCache = new Map<string, CachedWeatherData>();
 
     currentWeather = signal<WeatherData | null>(null);
     forecast = signal<ForecastData | null>(null);
@@ -139,6 +140,7 @@ export class WeatherService {
                 return of(null);
             })
         ).subscribe(data => {
+            console.log('subscribe');
             if (data) {
                 this.currentWeather.set(data);
                 this.fetchForecast(cityName);
@@ -176,23 +178,11 @@ export class WeatherService {
     }
 
     private getCachedData(cityKey: string): CachedWeatherData | null {
-        try {
-            const cached = localStorage.getItem(this.CACHE_KEY_PREFIX + cityKey);
-            if (cached) {
-                return JSON.parse(cached);
-            }
-        } catch (error) {
-            console.error('Error reading from cache:', error);
-        }
-        return null;
+        return this.weatherCache.get(cityKey) || null;
     }
 
     private setCachedData(cityKey: string, data: CachedWeatherData): void {
-        try {
-            localStorage.setItem(this.CACHE_KEY_PREFIX + cityKey, JSON.stringify(data));
-        } catch (error) {
-            console.error('Error writing to cache:', error);
-        }
+        this.weatherCache.set(cityKey, data);
     }
 }
 

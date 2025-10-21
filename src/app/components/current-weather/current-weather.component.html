@@ -2,7 +2,13 @@
     <div class="apple-weather-container">
         <!-- Location and current temp -->
         <div class="weather-header">
-            <h1 class="location">{{ cityName() }}</h1>
+            <div class="location-header">
+                <h1 class="location">{{ cityName() }}</h1>
+                <button mat-icon-button class="favorite-btn" (click)="toggleFavorite()"
+                    [attr.aria-label]="isFavorite() ? 'Remove from favorites' : 'Add to favorites'">
+                    <mat-icon>{{ isFavorite() ? 'star' : 'star_border' }}</mat-icon>
+                </button>
+            </div>
             <div class="current-temp">{{ temperature() }}°</div>
             <div class="weather-desc">{{ description() }}</div>
             <div class="temp-range">H:{{ tempMax() }}° L:{{ tempMin() }}°</div>

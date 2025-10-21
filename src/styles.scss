@@ -1,8 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$weather-primary: mat.m2-define-palette(mat.$m2-grey-palette, 400);
+$weather-accent: mat.m2-define-palette(mat.$m2-blue-grey-palette, 300);
+$weather-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+$weather-theme: mat.m2-define-light-theme((
+    color: (
+        primary: $weather-primary,
+        accent: $weather-accent,
+        warn: $weather-warn,
+    ),
+    typography: mat.m2-define-typography-config($font-family: 'Roboto, "Helvetica Neue", Arial, sans-serif'),
+    density: 0,
+));
+
+@include mat.all-component-themes($weather-theme);
+
 @import 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap';
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 
-// Global styles
 * {
     margin: 0;
     padding: 0;

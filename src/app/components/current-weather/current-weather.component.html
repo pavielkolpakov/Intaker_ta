@@ -4,7 +4,7 @@
         <div class="weather-header">
             <div class="location-header">
                 <h1 class="location">{{ cityName() }}</h1>
-                <button mat-icon-button class="favorite-btn" (click)="toggleFavorite()"
+                <button mat-fab class="favorite-btn" (click)="toggleFavorite()"
                     [attr.aria-label]="isFavorite() ? 'Remove from favorites' : 'Add to favorites'">
                     <mat-icon>{{ isFavorite() ? 'star' : 'star_border' }}</mat-icon>
                 </button>
